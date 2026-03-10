@@ -221,7 +221,8 @@ export function invokeESIGuru(input: ESIGuruInput): ESIGuruGuide {
     recentCategoryAffinity,
     mode
   );
-  const rankedInFocus = focusCategory
+  // During search, use the full ranked pool so results aren't locked to one category
+  const rankedInFocus = focusCategory && mode === 'journey'
     ? rankedPool.filter((item) => item.category === focusCategory)
     : rankedPool;
 
@@ -344,9 +345,9 @@ function rankSidebarItem(input: {
   }
 
   if (input.currentCategory && category === input.currentCategory) {
-    // Only boost current category when browsing, not when searching
+    // Light boost during search (tiebreaker), stronger during browsing
+    score += input.queryTokens.size > 0 ? 1.5 : 5;
     if (input.queryTokens.size === 0) {
-      score += 5;
       reasonParts.push('in the same section');
     }
   }
@@ -547,13 +548,14 @@ function pickFocusCategory(
     categoryScores.set(item.category ?? 'General', existing + item.score);
   }
 
-  // Only boost current page's category when browsing, not searching
-  if (mode === 'journey' && currentPage) {
+  // Current page category is a signal — strong when browsing, light when searching
+  if (currentPage) {
     const pageCategory = normalizeCategory(currentPage.category);
     if (pageCategory) {
+      const boost = mode === 'question' ? 1 : 4;
       categoryScores.set(
         pageCategory,
-        (categoryScores.get(pageCategory) ?? 0) + 4
+        (categoryScores.get(pageCategory) ?? 0) + boost
       );
     }
   }
