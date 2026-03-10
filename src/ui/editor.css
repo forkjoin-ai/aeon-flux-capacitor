@@ -25,7 +25,11 @@
   --afc-accent-primary: hsl(264, 80%, 64%);
   --afc-accent-secondary: hsl(200, 90%, 58%);
   --afc-accent-tertiary: hsl(340, 82%, 62%);
-  --afc-accent-gradient: linear-gradient(135deg, hsl(264, 80%, 64%), hsl(200, 90%, 58%));
+  --afc-accent-gradient: linear-gradient(
+    135deg,
+    hsl(264, 80%, 64%),
+    hsl(200, 90%, 58%)
+  );
 
   --afc-border-subtle: hsla(215, 20%, 68%, 0.08);
   --afc-border-default: hsla(215, 20%, 68%, 0.15);
@@ -387,9 +391,11 @@
   width: 2px;
   opacity: 0;
   transition: opacity var(--afc-motion-fast);
-  background: color-mix(in oklch,
-      hsl(0, 72%, 58%) calc((1 - var(--sentiment, 0)) * 50%),
-      hsl(152, 68%, 50%) calc((1 + var(--sentiment, 0)) * 50%));
+  background: color-mix(
+    in oklch,
+    hsl(0, 72%, 58%) calc((1 - var(--sentiment, 0)) * 50%),
+    hsl(152, 68%, 50%) calc((1 + var(--sentiment, 0)) * 50%)
+  );
 }
 
 .afc-block:hover .afc-sentiment-bar {
@@ -875,7 +881,6 @@
 }
 
 @keyframes afc-pulse {
-
   0%,
   100% {
     opacity: 0.4;
@@ -1234,7 +1239,11 @@
   top: 0;
   left: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--afc-accent), hsla(264, 80%, 64%, 0.6));
+  background: linear-gradient(
+    90deg,
+    var(--afc-accent),
+    hsla(264, 80%, 64%, 0.6)
+  );
   transition: width 0.15s ease;
   z-index: 900;
 }
@@ -1323,7 +1332,6 @@
 }
 
 @keyframes afc-typing-bounce {
-
   0%,
   60%,
   100% {
