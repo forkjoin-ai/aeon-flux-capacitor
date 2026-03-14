@@ -1,120 +1,71 @@
 # @affectively/capacitor
 
-**The Embedding Editor** — where text is a derivative of the vector space.
+`@affectively/capacitor` is a collaborative editor and document platform with CRDT-backed documents, structured semantic layers, multiple reading and publishing projections, and built-in collaboration features.
 
-An embedding-first collaborative WYSIWYG editor. Every block is a vector embedding first, with text as the human-readable projection. Entities, classifications, positional encodings, and semantic relationships are all first-party primitives. CRDT-based, mobile-first, with AI native throughout.
+The strongest fair brag is breadth. This repo already covers much more than a text box: editor UI, document model, revisions, code-aware blocks, comments, presence, publishing, provenance, analytics, search, and alternative projections such as audio and spatial views.
 
-## Core Principles
+## What It Tries To Make Easier
 
-- **Embedding-first**: The document's primary representation is a vector space. Text is a projection.
-- **Voice = Tone**: Embed content → train voice model → generate in-voice. Writing style is a fingerprint in embedding space.
-- **Horizon UI**: Single surface, infinite depth. Everything is latent, ready to summon, instant when called. Cmd+K for Spotlight-style omnisearch.
-- **Code as first-class citizen**: When embeddings project as code, the editor adapts — line numbers, symbol detection, and inference-based "imagined execution" that predicts outputs inline.
-- **Agents write in embeddings**: Language-agnostic. Any language, made-up languages, binary. The embedding understands meaning, not syntax.
-- **Better than git**: CRDT-native revision management with rollback, rollforward, branching, merge (conflict-free), cherry-pick, time-travel, and blame.
-- **Perfect typography**: Source Serif for body, Inter for UI, JetBrains Mono for code. OpenType ligatures, old-style numerals, smart quotes, hanging punctuation.
-- **Publishing is a projection**: Text, audio, 3D space, email, PDF — each is a projection surface of the same embedding space.
-- **Content provenance**: Every block is UCAN-signed. Cryptographic chain of custody. AI contribution tracked per block.
-- **Reading is the other half**: Medium-quality reading experience with focus mode, Tufte sidenotes, progressive disclosure, engagement analytics.
+- keep a collaborative document in sync,
+- preserve more structure than plain text,
+- switch between writing, reading, and publishing views without throwing the document away,
+- and layer in comments, presence, provenance, and search without bolting them on later.
 
-## Architecture
+The "embedding-first" idea in this repo is best read as: the document can carry semantic structure as a first-class part of the model, not only as text on a page.
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  EditorRoot (React)                                     │
-│  ┌──────────┬──────────┬──────────┬──────────┬────────┐ │
-│  │   Edit   │ Markdown │  Read    │  Spatial │ Audio  │ │
-│  └──────────┴──────────┴──────────┴──────────┴────────┘ │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │  CommandPalette (Cmd+K)  │  GhostSuggest (Tab)    │  │
-│  └───────────────────────────────────────────────────┘  │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │  BlockRenderer → WordActionMenu                   │  │
-│  │  ContentEditable + Entity overlays + Comments     │  │
-│  └───────────────────────────────────────────────────┘  │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │  CollaborationPresence (multiplayer cursors)      │  │
-│  │  InlineComments (threaded · suggested edits)      │  │
-│  └───────────────────────────────────────────────────┘  │
-├─────────────────────────────────────────────────────────┤
-│  AeonDocument (Yjs XmlFragment — CRDT surface)          │
-│  ↕ bidirectional sync                                   │
-│  EmbeddingDocument (vector space)                       │
-│  ┌──────────┬──────────┬──────────┬───────────┐         │
-│  │Pipeline  │ Semantic │  Entity  │   Voice   │         │
-│  │(embed,   │  Graph   │  Layer   │  Engine   │         │
-│  │ NER,     │(cluster, │(registry,│(train,    │         │
-│  │ classify)│ edges)   │ PII)     │ score)    │         │
-│  └──────────┴──────────┴──────────┴───────────┘         │
-├─────────────────────────────────────────────────────────┤
-│  Projections                                            │
-│  ┌─────────┬──────────┬──────────┬──────────┐           │
-│  │  Text   │  Audio   │  Spatial │ Reading  │           │
-│  │(default)│(Web Audio│(Three.js)│(Tufte,   │           │
-│  │         │ synth)   │          │ focus)   │           │
-│  └─────────┴──────────┴──────────┴──────────┘           │
-├─────────────────────────────────────────────────────────┤
-│  Intelligence                                           │
-│  ┌──────────────────┬────────────────────────┐          │
-│  │SemanticBacklinks  │DocumentSearch          │          │
-│  │(auto wiki-links)  │(semantic + fuzzy)      │          │
-│  └──────────────────┴────────────────────────┘          │
-├─────────────────────────────────────────────────────────┤
-│  Publishing · Provenance · Analytics                    │
-│  ┌──────────┬──────────┬──────────────────┐             │
-│  │Pipeline  │Content   │Reading           │             │
-│  │(draft→   │Provenance│Analytics         │             │
-│  │ publish) │(UCAN sig)│(engagement heat) │             │
-│  └──────────┴──────────┴──────────────────┘             │
-├─────────────────────────────────────────────────────────┤
-│  CodeRuntime │ ESI Registry │ RevisionManager           │
-│  DevMode     │ XPath Engine │ UCAN Permissions          │
-└─────────────────────────────────────────────────────────┘
-```
+## Why People May Like It
 
-## Modules
+- the package already exports a broad editor stack instead of only one widget,
+- collaboration is built in with CRDT documents, comments, and presence,
+- projections are a real part of the model, with text, reading, audio, and spatial surfaces,
+- publishing and provenance live close to authoring instead of in separate systems,
+- and the repo is large enough to feel substantial, with a broad export surface and dedicated tests.
 
-| Module | Entry | Purpose |
-|--------|-------|---------||
-| `core/` | `EmbeddingDocument`, `EmbeddingPipeline`, `SemanticGraph`, `EntityLayer` | The embedding space |
-| `document/` | `AeonDocument`, `XPathEngine`, `MarkdownIO` | CRDT surface & addressing |
-| `revisions/` | `RevisionManager` | Better-than-git revision system |
-| `editor/` | `EditorRoot`, `BlockRenderer`, `WordActionMenu`, `CommandPalette`, `GhostSuggest` | React editor UI |
-| `code/` | `CodeRuntime` | Inference-based imagined execution |
-| `esi/` | `ESIRegistry` | On-demand inference tags |
-| `voice/` | `VoiceEngine` | Embed → train voice → generate in-voice |
-| `projections/` | `AudioProjection`, `SpatialProjection`, `ReadingProjection` | Embedding projection surfaces |
-| `collaboration/` | `CollaborationPresence`, `CommentManager` | Multiplayer cursors, comments, suggested edits |
-| `publishing/` | `PublishingPipeline` | Draft→review→publish, SEO, social cards, multi-format export |
-| `intelligence/` | `SemanticBacklinks`, `DocumentSearch` | Auto wiki-links, semantic + text search |
-| `provenance/` | `ContentProvenance` | UCAN-signed authorship attestation, AI contribution tracking |
-| `analytics/` | `ReadingAnalytics` | Privacy-preserving engagement tracking |
-| `devmode/` | `DevModeController` | Page-as-editor (filesystem-free) |
-| `ui/` | `tokens`, `editor.css` | Horizon UI design system |
+## Main Areas
+
+- `core`: embedding and indexing primitives
+- `document`: CRDT document model and document addressing
+- `revisions`: revision management
+- `editor`: editor UI, block rendering, command palette, and suggestions
+- `code`: code-aware runtime and imagined execution helpers
+- `collaboration`: presence and inline comments
+- `projections`: reading, audio, spatial, squared-square, and hypercube views
+- `publishing`: publish records and export pipeline
+- `intelligence`: backlinks, search, document profiling, and reader/writer analysis
+- `provenance`: authorship and contribution tracking
+- `analytics`: reading analytics
+- `sharing`: capability sharing
+- `voice`: voice model and voice interface
+- `layout`: layout and content selection helpers
+- `container`: higher-level document wrapper
+
+That is the real story here. Capacitor is not a minimal editor package. It is a broad document system.
 
 ## Quick Start
 
-```typescript
+```ts
 import {
-  // Core
-  EmbeddingDocument, AeonDocument, EmbeddingPipeline,
-  // Editor
-  EditorRoot, CommandPalette, GhostSuggest,
-  // Projections
-  AudioProjection, SpatialProjection, ReadingProjection,
-  // Collaboration
-  CollaborationPresence, CommentManager,
-  // Intelligence
-  SemanticBacklinks, DocumentSearch,
-  // Publishing
+  AeonDocument,
+  EditorRoot,
+  CollaborationPresence,
+  CommentManager,
+  DocumentSearch,
   PublishingPipeline,
-  // Provenance
-  ContentProvenance,
-  // Analytics
-  ReadingAnalytics,
 } from '@affectively/capacitor';
 ```
 
-## License
+## What You Get
 
-MIT
+- a CRDT-backed document surface,
+- editor UI primitives,
+- revision handling,
+- code-aware blocks,
+- multiple output projections,
+- collaboration presence and comments,
+- publishing helpers,
+- provenance tracking,
+- search and document intelligence helpers.
+
+## Why This README Is Grounded
+
+Capacitor does not need to promise a new theory of writing. The strongest fair brag is that it already looks like a serious editor platform with collaboration, semantic structure, multiple projections, and a wide export surface in one package.
