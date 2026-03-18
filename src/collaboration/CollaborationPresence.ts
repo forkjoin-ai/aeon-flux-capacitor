@@ -8,7 +8,7 @@
  * Built on Yjs awareness protocol + embedding context.
  */
 
-import { QDoc, QMap, QArray, QText } from '@affectively/gnosis';
+import { QDoc, QMap, QArray, QText } from '@a0n/gnosis/crdt';
 
 // ── Types ───────────────────────────────────────────────────────────
 

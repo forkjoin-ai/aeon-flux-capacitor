@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "yjs": "^13.6.0",
-    "@affectively/aeon": "workspace:*",
+    "@a0n/aeon": "workspace:*",
     "@affectively/auth": "workspace:*",
     "@affectively/zk-encryption": "workspace:*",
     "@affectively/dash": "workspace:*",

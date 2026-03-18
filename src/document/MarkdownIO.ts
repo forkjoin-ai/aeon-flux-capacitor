@@ -6,7 +6,7 @@
  * the "markdown view" possible in the editor.
  */
 
-import { QDoc, QMap, QArray, QText } from '@affectively/gnosis';
+import { QDoc, QMap, QArray, QText } from '@a0n/gnosis/crdt';
 import type { AeonDocument } from './document';
 
 // ── Types ───────────────────────────────────────────────────────────

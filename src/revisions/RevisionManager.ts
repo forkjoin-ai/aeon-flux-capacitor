@@ -7,7 +7,7 @@
  * branching, merge, cherry-pick, and time-travel.
  */
 
-import { QDoc, QMap, QArray, QText } from '@affectively/gnosis';
+import { QDoc, QMap, QArray, QText } from '@a0n/gnosis/crdt';
 import type { AeonDocument } from '../document/document';
 
 // ── Types ───────────────────────────────────────────────────────────
@@ -114,7 +114,7 @@ export class RevisionManager {
   private branches: Map<string, Branch> = new Map();
 
   /** Current branch name */
-  private currentBranch: string = 'main';
+  private currentBranch = 'main';
 
   /** Auto-snapshot debounce timer */
   private autoSnapshotTimer: ReturnType<typeof setTimeout> | null = null;
@@ -123,7 +123,7 @@ export class RevisionManager {
   private readonly autoSnapshotIntervalMs: number;
 
   /** Change counter since last auto-snapshot */
-  private changesSinceSnapshot: number = 0;
+  private changesSinceSnapshot = 0;
 
   /** Change threshold for auto-snapshot */
   private readonly autoSnapshotThreshold: number;
@@ -163,7 +163,7 @@ export class RevisionManager {
   createRevision(
     doc: AeonDocument,
     label?: string,
-    authorDid: string = 'local'
+    authorDid = 'local'
   ): Revision {
     const branch = this.branches.get(this.currentBranch)!;
     const id = this.generateId();
@@ -201,7 +201,7 @@ export class RevisionManager {
   rollbackTo(
     revisionId: string,
     doc: AeonDocument,
-    authorDid: string = 'local'
+    authorDid = 'local'
   ): Revision | null {
     const targetRevision = this.revisions.get(revisionId);
     if (!targetRevision) return null;
@@ -239,7 +239,7 @@ export class RevisionManager {
   rollforwardTo(
     revisionId: string,
     doc: AeonDocument,
-    authorDid: string = 'local'
+    authorDid = 'local'
   ): Revision | null {
     const targetRevision = this.revisions.get(revisionId);
     if (!targetRevision) return null;
@@ -298,7 +298,7 @@ export class RevisionManager {
   merge(
     sourceBranch: string,
     doc: AeonDocument,
-    authorDid: string = 'local'
+    authorDid = 'local'
   ): Revision | null {
     const source = this.branches.get(sourceBranch);
     if (!source) return null;
@@ -331,7 +331,7 @@ export class RevisionManager {
   cherryPick(
     revisionId: string,
     doc: AeonDocument,
-    authorDid: string = 'local'
+    authorDid = 'local'
   ): Revision | null {
     const revision = this.revisions.get(revisionId);
     if (!revision) return null;
@@ -474,7 +474,7 @@ export class RevisionManager {
    * Record a change for auto-snapshot tracking.
    * Call this on every CRDT operation.
    */
-  recordChange(doc: AeonDocument, authorDid: string = 'local'): void {
+  recordChange(doc: AeonDocument, authorDid = 'local'): void {
     this.changesSinceSnapshot++;
 
     if (this.changesSinceSnapshot >= this.autoSnapshotThreshold) {

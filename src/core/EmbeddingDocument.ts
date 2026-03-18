@@ -1,5 +1,5 @@
 /**
- * @affectively/aeon-flux-capacitor — Embedding Core
+ * @a0n/aeon-flux-capacitor — Embedding Core
  *
  * The fundamental data model. Every block is a point in vector space
  * with positional encoding, entity annotations, and semantic classification.

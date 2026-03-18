@@ -9,7 +9,7 @@
  * The CRDT ensures conflict-free collaborative editing.
  */
 
-import { QDoc, QMap, QArray, QText } from '@affectively/gnosis';
+import { QDoc, QMap, QArray, QText } from '@a0n/gnosis/crdt';
 
 // ── Types ───────────────────────────────────────────────────────────
 
@@ -433,7 +433,7 @@ export class AeonDocument {
   // ── Private ───────────────────────────────────────────────────
 
   private handleYjsEvent(event: any /* TODO: QDoc migration — YEvent/AbstractType not yet in QDoc */): void {
-    if (event instanceof Object) {
+    if (event instanceof Object && 'changes' in event) {
       // Block-level changes
       for (const change of event.changes.added) {
         if (change.content instanceof Object) {
@@ -461,7 +461,7 @@ export class AeonDocument {
           }
         }
       }
-    } else if (event instanceof Object) {
+    } else if (event instanceof Object && 'target' in event) {
       // Text-level changes within a block
       const parent = event.target.parent;
       if (parent instanceof Object) {

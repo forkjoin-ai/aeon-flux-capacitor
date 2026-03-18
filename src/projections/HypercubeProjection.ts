@@ -18,7 +18,7 @@
  * This is NOT 3D. This is the 4th dimension of your document.
  */
 
-import * as THREE from '@affectively/aeon-3d/three';
+import * as THREE from '@a0n/aeon-3d/three';
 
 // ── Types ───────────────────────────────────────────────────────────
 

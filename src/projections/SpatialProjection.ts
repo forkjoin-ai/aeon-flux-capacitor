@@ -16,7 +16,7 @@
  * Click a node to jump to that block in the text editor.
  */
 
-import * as THREE from '@affectively/aeon-3d/three';
+import * as THREE from '@a0n/aeon-3d/three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // ── Types ───────────────────────────────────────────────────────────

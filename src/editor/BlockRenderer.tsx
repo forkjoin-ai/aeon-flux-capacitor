@@ -7,7 +7,7 @@
  */
 
 import React, { useRef, useEffect, useCallback, useState } from 'react';
-import type * as Y from '@affectively/gnosis';
+import type * as Y from '@a0n/gnosis/crdt';
 import { useEditor } from './EditorRoot';
 
 // ── Types ───────────────────────────────────────────────────────────
@@ -159,7 +159,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
           className="afc-block-locked"
           title={`Locked by ${embeddedNode.metadata.lockState.lockedBy}`}
         >
-          🔒
+          Locked
         </div>
       )}
 
