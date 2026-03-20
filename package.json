@@ -16,7 +16,7 @@
     "@a0n/aeon": "workspace:*",
     "@affectively/auth": "workspace:*",
     "@affectively/zk-encryption": "workspace:*",
-    "@affectively/dash": "workspace:*",
+    "@a0n/dash": "workspace:*",
     "@dashrelay/client": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
