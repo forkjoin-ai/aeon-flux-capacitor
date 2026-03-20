@@ -193,9 +193,17 @@ function blockToXmlElement(
   generateId: () => string
 ): any {
   // TODO: QDoc migration — replace with QDoc XmlElement equivalent when available
-  const element = { type: block.type, attributes: {} as Record<string, string>, children: [] as any[] } as any;
-  element.setAttribute = (k: string, v: string) => { element.attributes[k] = v; };
-  element.insert = (pos: number, items: any[]) => { element.children.splice(pos, 0, ...items); };
+  const element = {
+    type: block.type,
+    attributes: {} as Record<string, string>,
+    children: [] as any[],
+  } as any;
+  element.setAttribute = (k: string, v: string) => {
+    element.attributes[k] = v;
+  };
+  element.insert = (pos: number, items: any[]) => {
+    element.children.splice(pos, 0, ...items);
+  };
   element.setAttribute('id', generateId());
   element.setAttribute('embedding-id', generateId());
 

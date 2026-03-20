@@ -253,13 +253,17 @@ export class AeonDocument {
   }
 
   /** Get a block element by position */
-  getBlock(position: number): any /* TODO: QDoc migration — XmlElement not yet in QDoc */ | null {
+  getBlock(
+    position: number
+  ): any /* TODO: QDoc migration — XmlElement not yet in QDoc */ | null {
     const item = this.fragment.get(position);
     return item instanceof Object ? item : null;
   }
 
   /** Get a block by its ID attribute */
-  getBlockById(id: string): any /* TODO: QDoc migration — XmlElement not yet in QDoc */ | null {
+  getBlockById(
+    id: string
+  ): any /* TODO: QDoc migration — XmlElement not yet in QDoc */ | null {
     for (let i = 0; i < this.fragment.length; i++) {
       const item = this.fragment.get(i);
       if (item instanceof Object && item.getAttribute('id') === id) {
@@ -271,7 +275,8 @@ export class AeonDocument {
 
   /** Get all blocks */
   getAllBlocks(): any /* TODO: QDoc migration — XmlElement not yet in QDoc */[] {
-    const blocks: any /* TODO: QDoc migration — XmlElement not yet in QDoc */[] = [];
+    const blocks: any /* TODO: QDoc migration — XmlElement not yet in QDoc */[] =
+      [];
     for (let i = 0; i < this.fragment.length; i++) {
       const item = this.fragment.get(i);
       if (item instanceof Object) {
@@ -432,7 +437,9 @@ export class AeonDocument {
 
   // ── Private ───────────────────────────────────────────────────
 
-  private handleYjsEvent(event: any /* TODO: QDoc migration — YEvent/AbstractType not yet in QDoc */): void {
+  private handleYjsEvent(
+    event: any /* TODO: QDoc migration — YEvent/AbstractType not yet in QDoc */
+  ): void {
     if (event instanceof Object && 'changes' in event) {
       // Block-level changes
       for (const change of event.changes.added) {

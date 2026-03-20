@@ -222,9 +222,10 @@ export function invokeESIGuru(input: ESIGuruInput): ESIGuruGuide {
     mode
   );
   // During search, use the full ranked pool so results aren't locked to one category
-  const rankedInFocus = focusCategory && mode === 'journey'
-    ? rankedPool.filter((item) => item.category === focusCategory)
-    : rankedPool;
+  const rankedInFocus =
+    focusCategory && mode === 'journey'
+      ? rankedPool.filter((item) => item.category === focusCategory)
+      : rankedPool;
 
   const suggestions = buildSuggestions(
     mode,
@@ -604,9 +605,7 @@ function buildFollowUpQuestion(
     return 'Try refining your search or ask a different question.';
   }
 
-  return friendly
-    ? `Ask me anything about ${friendly}.`
-    : 'Ask me anything.';
+  return friendly ? `Ask me anything about ${friendly}.` : 'Ask me anything.';
 }
 
 function humanizeCategory(category: string | null): string | null {
@@ -625,13 +624,28 @@ function humanizeCategory(category: string | null): string | null {
         .filter(Boolean);
       // Sentence case: capitalize first word, leave rest lowercase
       // except known acronyms
-      const ACRONYMS = new Set(['ai', 'api', 'cpu', 'gpu', 'llm', 'os', 'tts', 'stt', 'ui', 'vl', 'wasm', 'zk']);
-      const humanized = words.map((w, i) => {
-        const lower = w.toLowerCase();
-        if (ACRONYMS.has(lower)) return lower.toUpperCase();
-        if (i === 0) return lower.charAt(0).toUpperCase() + lower.slice(1);
-        return lower;
-      }).join(' ');
+      const ACRONYMS = new Set([
+        'ai',
+        'api',
+        'cpu',
+        'gpu',
+        'llm',
+        'os',
+        'tts',
+        'stt',
+        'ui',
+        'vl',
+        'wasm',
+        'zk',
+      ]);
+      const humanized = words
+        .map((w, i) => {
+          const lower = w.toLowerCase();
+          if (ACRONYMS.has(lower)) return lower.toUpperCase();
+          if (i === 0) return lower.charAt(0).toUpperCase() + lower.slice(1);
+          return lower;
+        })
+        .join(' ');
       // Truncate if too long
       if (humanized.length > 40) {
         const truncated = humanized.slice(0, 37).replace(/\s+\S*$/, '');
