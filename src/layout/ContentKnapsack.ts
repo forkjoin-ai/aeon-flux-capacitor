@@ -789,6 +789,20 @@ export class ContentKnapsack {
       })
       .sort((a, b) => b.ratio - a.ratio);
 
+    // Deceptacon: floor-weight elimination -- skip blocks whose value/weight
+    // ratio falls below the Buleyean floor.  w = R - min(v, R) + 1 where R
+    // is the top ratio and v is rejection count (rank position).
+    if (ranked.length > 1) {
+      const R = ranked.length;
+      const topRatio = ranked[0]?.ratio ?? 0;
+      const filtered = ranked.filter((_item, idx) => {
+        const buleyeanWeight = R - Math.min(idx, R) + 1;
+        return buleyeanWeight >= 2 || _item.ratio >= topRatio * 0.05;
+      });
+      ranked.length = 0;
+      ranked.push(...filtered);
+    }
+
     const result = new Map<string, number>();
     let remaining = capacity;
 

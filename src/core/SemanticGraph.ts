@@ -333,8 +333,10 @@ export class SemanticGraph {
 
     function find(id: string): string {
       let root = id;
+      let guard = 0;
       while (parent.get(root) !== root) {
         root = parent.get(root)!;
+        if (++guard > parent.size) break; // Law 7: cycle guard
       }
       // Path compression
       let current = id;
@@ -351,8 +353,9 @@ export class SemanticGraph {
     }
 
     // Union nodes connected by similarity edges
+    const SIMILARITY_UNION_THRESHOLD = 4/5; // Law 6: discrete rational boundary for clustering
     for (const edge of this.edges) {
-      if (edge.type === 'similarity' && edge.weight >= 0.8) {
+      if (edge.type === 'similarity' && edge.weight >= SIMILARITY_UNION_THRESHOLD) {
         union(edge.source, edge.target);
       }
     }

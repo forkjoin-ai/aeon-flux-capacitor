@@ -352,6 +352,18 @@ export class DualIndex {
       results.push(entry);
     }
 
+    // Deceptacon: floor-weight elimination -- when querying by emotion,
+    // skip entries whose Buleyean weight w = R - min(v, R) + 1 falls to
+    // the floor.  Rank by intensity descending, prune the tail.
+    if (results.length > 2) {
+      results.sort((a, b) => b.intensity - a.intensity);
+      const R = results.length;
+      return results.filter((_entry, idx) => {
+        const buleyeanWeight = R - Math.min(idx, R) + 1;
+        return buleyeanWeight >= 2;
+      });
+    }
+
     return results;
   }
 
@@ -374,7 +386,18 @@ export class DualIndex {
       }
     }
 
-    return results.sort((a, b) => b.similarity - a.similarity).slice(0, limit);
+    // Deceptacon: floor-weight elimination -- skip entries whose Buleyean
+    // weight w = R - min(v, R) + 1 falls to the floor (rank >= R).
+    const sorted = results.sort((a, b) => b.similarity - a.similarity);
+    if (sorted.length > 1) {
+      const R = sorted.length;
+      const kept = sorted.filter((_entry, idx) => {
+        const buleyeanWeight = R - Math.min(idx, R) + 1;
+        return buleyeanWeight >= 2;
+      });
+      return kept.slice(0, limit);
+    }
+    return sorted.slice(0, limit);
   }
 
   /**
